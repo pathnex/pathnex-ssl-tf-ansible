@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pathnex</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: #000;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 800px;
+    }
+
+    h1 {
+      font-size: 52px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 22px;
+      color: #aaa;
+    }
+
+    .badge {
+      margin-top: 25px;
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: #111;
+      border: 1px solid #333;
+      color: #00ffcc;
+      display: inline-block;
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 12px 28px;
+      font-size: 16px;
+      border-radius: 30px;
+      border: none;
+      background: #0071e3;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #005bb5;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: #111;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 500px;
+    }
+
+    .close {
+      margin-top: 20px;
+      display: inline-block;
+      cursor: pointer;
+      color: #00ffcc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Welcome Pathnex Students</h1>
+    <p>Your SSL certificate is working perfectly.</p>
+    <div class="badge">🔒 Secure Connection Enabled</div>
+
+    <br>
+    <button class="btn" onclick="openModal()">View Certificate Details</button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>Check SSL Certificate</h2>
+      <p>
+        Click the 🔒 lock icon in your browser’s address bar,<br>
+        then select "Connection is secure" → "Certificate is valid".
+      </p>
+      <div class="close" onclick="closeModal()">Close</div>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>

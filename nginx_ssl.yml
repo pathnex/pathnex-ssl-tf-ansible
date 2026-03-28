@@ -1,0 +1,87 @@
+---
+- name: Setup Nginx with self-signed TLS on Amazon Linux EC2
+  hosts: webservers
+  become: true
+
+  vars:
+    ssl_cert_path: /etc/ssl/certs/ec2.crt
+    ssl_key_path: /etc/ssl/private/ec2.key
+    server_ip: 13.201.49.198
+    
+
+  tasks:
+
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Deploy custom Patnex page
+      copy:
+        src: files/index.html
+        dest: /usr/share/nginx/html/index.html
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Ensure SSL directories exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - /etc/ssl/certs
+        - /etc/ssl/private
+    - name: Generate private key
+      openssl_privatekey:
+        path: "{{ ssl_key_path }}"
+        size: 2048
+
+    - name: Generate CSR
+      openssl_csr:
+        path: /etc/ssl/certs/ec2.csr
+        privatekey_path: "{{ ssl_key_path }}"
+        common_name: "{{ server_ip }}"
+        subject_alt_name:
+          - "IP:{{ server_ip }}"
+
+
+    - name: Generate self-signed certificate
+      openssl_certificate:
+        path: "{{ ssl_cert_path }}"
+        privatekey_path: "{{ ssl_key_path }}"
+        csr_path: /etc/ssl/certs/ec2.csr
+        provider: selfsigned
+        selfsigned_not_after: "+365d"
+        attributes: ''
+
+    - name: Configure Nginx for HTTPS
+      copy:
+        dest: /etc/nginx/nginx.conf
+        content: |
+          events {}
+          http {
+              server {
+                  listen 443 ssl;
+                  server_name {{ server_ip }};
+
+                  ssl_certificate {{ ssl_cert_path }};
+                  ssl_certificate_key {{ ssl_key_path }};
+
+                  location / {
+                      root /usr/share/nginx/html;
+                      index index.html;
+                  }
+              }
+          }
+
+    - name: Test Nginx configuration
+      command: nginx -t
+      register: nginx_test
+      ignore_errors: yes
+
+    - name: Enable and start Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
