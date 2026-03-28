@@ -1,3 +1,9 @@
+# Youtube Video Link
+    https://www.youtube.com/live/80DSuD1vAAU
+
+
+*A step-by-step guide to using this repository efficiently*
+
 1. In main.tf
 
     Change to your AMI (Not Necessary)
