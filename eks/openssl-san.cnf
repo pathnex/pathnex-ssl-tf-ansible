@@ -1,0 +1,20 @@
+[req]
+default_bits = 2048
+prompt = no
+distinguished_name = dn
+x509_extensions = v3_req
+
+[dn]
+C = IN
+ST = Haryana
+L = Gurgaon
+O = Pathnex
+OU = DevOps
+CN = pathnex
+
+[v3_req]
+subjectAltName = @alt_names
+
+[alt_names]
+IP.1 = 43.204.215.77
+IP.2 = 13.207.53.140

@@ -6,7 +6,7 @@
   vars:
     ssl_cert_path: /etc/ssl/certs/ec2.crt
     ssl_key_path: /etc/ssl/private/ec2.key
-    server_ip: 13.201.49.198
+    server_ip: 3.109.200.9
     
 
   tasks:

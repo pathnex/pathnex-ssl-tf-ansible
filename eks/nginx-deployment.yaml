@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pathnex-nginx
+  namespace: pathnex
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: pathnex-nginx
+
+  template:
+    metadata:
+      labels:
+        app: pathnex-nginx
+
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+
+          volumeMounts:
+            - name: website
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+              readOnly: true
+
+            - name: tls
+              mountPath: /etc/nginx/tls
+              readOnly: true
+
+      volumes:
+        - name: website
+          configMap:
+            name: pathnex-website
+
+        - name: nginx-config
+          configMap:
+            name: pathnex-nginx-config
+
+        - name: tls
+          secret:
+            secretName: tls-pathnex
